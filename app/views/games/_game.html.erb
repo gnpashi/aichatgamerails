@@ -1,0 +1,39 @@
+<div id="<%= dom_id game %>">
+  <p>
+    <strong>Name:</strong>
+    <%= game.name %>
+  </p>
+
+  <p>
+    <strong>Goal:</strong>
+    <%= game.goal %>
+  </p>
+  <p>
+    <strong>Players:</strong>
+    <% game.users.each do |user| %>
+      <%= user.name %>
+    <% end %>
+  </p>
+
+  <%= turbo_stream_from :messages %>
+    <div id="messages">
+      <% game.messages.each do |message| %>
+        <%= turbo_stream.append "messages", message %>
+      <% end %>
+    </div>
+  <%= form_with(model: game.messages.build, url: game_messages_path(game)) do |form| %>
+    <div>
+      <%= form.label :body, style: "display: block" %>
+      <%= form.text_field :body, autocomplete: "off" %>
+    </div>
+
+      <%= form.text_field :user_id, value: @user.id, style: "display: none" %>
+
+      <%= form.text_field :game_id, style: "display: none" %>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
+
+</div>
