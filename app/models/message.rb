@@ -4,7 +4,7 @@ class Message < ApplicationRecord
   before_create :openai_request
 
   def openai_request
-    client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+    client = OpenAI::Client.new(access_token: Rails.application.credentials.OPENAI_API_KEY)
     response = client.chat(
     parameters: {
         model: "gpt-3.5-turbo", # Required.
